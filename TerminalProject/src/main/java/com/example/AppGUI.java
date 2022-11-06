@@ -42,7 +42,7 @@ public class AppGUI
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File output = jfc.getSelectedFile();
                 System.out.println(output.getPath());
-                financeData.OpenTSVFile(output);
+                financeData.OpenFinanceDataTSVFile(output);
             }
         });
 
