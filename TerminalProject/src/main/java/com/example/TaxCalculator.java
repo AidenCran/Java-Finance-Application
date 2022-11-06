@@ -9,7 +9,7 @@ public class TaxCalculator
     // Constructor
     public TaxCalculator() 
     {
-        // Read & Initilize Tax Table
+        // Read & Initialize Tax Table
         ConvertTaxTable();
     }
 

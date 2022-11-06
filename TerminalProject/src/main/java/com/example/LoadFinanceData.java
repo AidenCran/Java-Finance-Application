@@ -1,6 +1,8 @@
 package com.example;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +18,8 @@ public class LoadFinanceData {
         OpenTSVFile(new File("src/ShiftData.tsv"));
     }
 
+    // TODO | Extract & Parse Column Indexes for Required Fields (E.g. Columns for Date, Times & Hourly Rate)
+    // TODO | Rename & Further Comment Method
     // Extracts Information From TSV File
     public void OpenTSVFile(File file) {
         int rows = 180;
@@ -55,14 +59,6 @@ public class LoadFinanceData {
                 ShiftData newData = new ShiftData(weekday, newDate, startTime, endTime, hours, rate, gross);
                 shiftData.add(newData);
             }
-            float total = 0;
-            for (var item: shiftData) {
-                System.out.println(item.gross);
-                total += item.gross;
-            }
-
-            System.out.println("Total: " + total);
-
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
