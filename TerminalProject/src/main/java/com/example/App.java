@@ -11,6 +11,5 @@ public class App
     {
         TAXCALCULATOR = new TaxCalculator();
         AppGUI app = new AppGUI();
-        app.DisplayGUI();
     }
 }

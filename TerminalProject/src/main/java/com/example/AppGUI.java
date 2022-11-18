@@ -18,7 +18,10 @@ public class AppGUI
 
     public AppGUI()
     {
+        // Cache Calculator
         taxCalc = TAXCALCULATOR;
+
+        DisplayGUI();
     }
 
     void DisplayGUI()
@@ -61,12 +64,10 @@ public class AppGUI
         JTextArea ta = new JTextArea();
         ta.setEditable(false);
         
-        JScrollPane scroll = new JScrollPane(ta, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Enter Text");
-        JTextField tf = new JTextField(10); // accepts upto 10 characters
+        JTextField tf = new JTextField(4); // Accepts Upto 4 Characters (9999)
         
         //#region Buttons
 
@@ -121,11 +122,11 @@ public class AppGUI
         panel.add(send);
         panel.add(reset);
 
-        //Adding Components to the frame.
+        // Adding Components to the frame.
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, ta);
-        frame.getContentPane().add(BorderLayout.EAST, scroll);
+        frame.add(BorderLayout.CENTER, new JScrollPane(ta));
         frame.setResizable(true);
         frame.setVisible(true);
         

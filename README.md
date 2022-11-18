@@ -1,20 +1,50 @@
-# Java Finance Application
+# Java Personal Finance Application (AU)
 ## Overview
-Hello There! <br>
-You've stumbled upon a prototype application I'm developing in order to teach myself Java & better my development skill-set. This is mainly just a personal project, however I figure can't hurt to publish it here on Git.
+Hello There! 
+<br>
+This is a prototype application created mainly for self-development purposes. This project is intended to assist myself in learning Java development, and software testing where applicable. I'm keeping this repo public to _attempt_ to document my progress, and to keep myself accountable!
+---
+
+### Disclaimer
+_This application calculates withheld tax utilizing Australian ATO 2022 Calculation Method:
+[Tax Withheld Formula 2022](https://www.ato.gov.au/uploadedFiles/Content/MEI/downloads/calculating-amounts-to-be-withheld-from-13-October-2020.pdf). As a result, this currently does not reflect past or future changes, and does not consider total / final tax at the end of each financial year._
+
+---
 
 ## Application Purpose
-This application is designed to take in a dataset containing work data, so to manipulate it and display it through GUI Graphs, tables, etc.
 
-Currently, a parsed table is set up as displayed below; But soon this will be refactored to be dynamic rather than static.
+This application is designed to decompile a shift dataset into various comprehensible visual graphs and statistics for the user.
+<br>
+<br>
+**Input:** .TSV File, Layout as below _(**Future Implementation:** Allow User to define which collumns contain specfic data)_
+<br>
+**Output:** Extracted Information from dataset displayed as GUI Based Graphs & Statistics
 
-| Weekday | Date | Start Time | End Time | <> | HRS | Hourly Rate | Gross Earned |
-|---------|------|------------|----------|----|-----|-------------|--------------|
-| Monday  | 7/11 | 5:00am     | 10:00am  | <> | 5   | $30.98      | $154.9       |
 
-Contents of this table will also be refactored. Only requisite information requred are: <br>
-Date | Start Time  | End Time | Hourly Rate
+|    Date     | Start Time | End Time  | Hourly Rate  |  Is Holiday  |
+|:-----------:|:----------:|:---------:|:------------:|:------------:| 
+| 25/04/2022  |  05:00am   |  09:00am  |    $40.42    |     YES      | 
+| 27/04/2022  |  03:00pm   |  10:00pm  |    $30.98    |      NO      | 
+| 30/04/2022  |  05:00am   |  10:00am  |    $40.42    |      NO      |
+
+---
+
+## Testing Processes
+During this project, I'll attempt to apply various testing processes and procedures where applicable.
+<br>
+_(Mainly during calculation methods)_
+
+### Manual Testing
+...
+
+### Automatic Testing
+...
+
+#### Specific Unit Tests
+...
+
+#### Monkey Tests
+...
 
 ## Future Implementations
 - TBC
-- This README will be updated soon to be more informative, clean, and much less, Jank.
