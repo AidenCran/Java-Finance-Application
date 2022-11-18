@@ -3,6 +3,7 @@
 Hello There! 
 <br>
 This is a prototype application created mainly for self-development purposes. This project is intended to assist myself in learning Java development, and software testing where applicable. I'm keeping this repo public to _attempt_ to document my progress, and to keep myself accountable!
+
 ---
 
 ### Disclaimer
