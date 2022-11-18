@@ -9,10 +9,17 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import static com.example.App.TAXCALCULATOR;
+
 public class AppGUI
 {
-    public TaxCalculator taxCalc;
-    LoadFinanceData financeData = new LoadFinanceData();
+    public LoadFinanceData loadFinanceData = new LoadFinanceData();
+    TaxCalculator taxCalc;
+
+    public AppGUI()
+    {
+        taxCalc = TAXCALCULATOR;
+    }
 
     void DisplayGUI()
     {
@@ -42,7 +49,7 @@ public class AppGUI
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File output = jfc.getSelectedFile();
                 System.out.println(output.getPath());
-                financeData.OpenFinanceDataTSVFile(output);
+                loadFinanceData.OpenFinanceDataTSVFile(output);
             }
         });
 

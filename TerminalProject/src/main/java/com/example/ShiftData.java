@@ -1,9 +1,12 @@
 package com.example;
 
 import java.time.*;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 
 
-public class ShiftData {
+public class ShiftData implements Comparable<ShiftData> {
     public LocalDate date;
     public LocalTime startTime;
     public LocalTime endTime;
@@ -13,6 +16,14 @@ public class ShiftData {
     public String weekday;
     public float hoursWorked;
     public float gross;
+
+    int weekOfYear;
+    int year;
+    int shiftID;
+
+    public int getShiftID() {
+        return shiftID;
+    }
 
     public ShiftData(LocalDate date, LocalTime startTime, LocalTime endTime, float rate, boolean isHoliday)
     {
@@ -26,5 +37,27 @@ public class ShiftData {
         hoursWorked = endTime.toSecondOfDay() - startTime.toSecondOfDay();
         hoursWorked =  hoursWorked / 60 / 60;
         gross = hoursWorked * rate;
+
+        CreateShiftID();
+    }
+
+    void CreateShiftID()
+    {
+        // Define WOY Field
+        TemporalField woy = WeekFields.ISO.weekOfWeekBasedYear();
+
+        // Get Week + 1 (Index Starts at 0)
+        weekOfYear = date.get(woy) + 1;
+        year = date.getYear();
+
+        // Compile Shift ID
+        String ID = year + "" + weekOfYear;
+        shiftID = Integer.parseInt(ID);
+    }
+
+    // Custom Comparison Operator
+    @Override
+    public int compareTo(ShiftData shiftData) {
+        return shiftData.getShiftID() - this.shiftID;
     }
 }

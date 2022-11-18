@@ -1,23 +1,19 @@
 package com.example;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.io.*;
+import java.util.*;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+
+import static com.example.App.TAXCALCULATOR;
 
 public class LoadFinanceData {
-    ArrayList<ShiftData> shiftData = new ArrayList<>();
+    ArrayList<ShiftData> allShifts = new ArrayList<>();
 
-    // Key      Integer           Week of year + Year (E.g. 12022 (Week 1 of 2022)
+    // Key      String            Week of year + Year (E.g. 12022 (Week 1 of 2022)
     // Value    Array<ShiftData>  Shifts Completed in key Week
-    Map<Integer, ArrayList<ShiftData>> weeklyShifts = new HashMap<>();
+    Map<Integer, List<ShiftData>> weeklyShifts = new HashMap<>();
 
     int dateIndex = 1;
     int startTimeIndex = 2;
@@ -25,8 +21,21 @@ public class LoadFinanceData {
     int rateIndex = 6;
     int holidayIndex = 7;
 
-    public LoadFinanceData() {
+    public LoadFinanceData(File file) {
+        OpenFinanceDataTSVFile(file);
+    }
+
+    public LoadFinanceData(String fileName) {
+        OpenFinanceDataTSVFile(new File(fileName));
+    }
+
+    public LoadFinanceData()
+    {
         OpenFinanceDataTSVFile(new File("src/ShiftData.tsv"));
+
+        System.out.println(getGrossPay());
+        System.out.println(getNetPay());
+        System.out.println(getTotalTax());
     }
 
     /**
@@ -68,18 +77,75 @@ public class LoadFinanceData {
 
                 // Create New Data Object
                 ShiftData newData = new ShiftData(newDate, startTime, endTime, rate, isHoliday);
-                shiftData.add(newData);
-                System.out.println(newData.hoursWorked);
-                System.out.println(newData.gross);
-
-                GroupDataIntoWeeks();
+                allShifts.add(newData);
             }
+
+
+
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
+
+        GroupDataIntoWeeks();
     }
 
     void GroupDataIntoWeeks(){
+        Map<Integer, List<ShiftData>> shiftsByWeek = new HashMap<>();
+        for (var shift : allShifts){
+            if (!shiftsByWeek.containsKey(shift.getShiftID())){
+                shiftsByWeek.put(shift.getShiftID(), new ArrayList<>());
+            }
+            shiftsByWeek.get(shift.getShiftID()).add(shift);
+        }
 
+        weeklyShifts = shiftsByWeek;
     }
+
+    public float getGrossPay()
+    {
+        float totalGross = 0;
+        for (var shift : allShifts)
+        {
+            totalGross += shift.gross;
+        }
+
+        return totalGross;
+    }
+
+    public float getNetPay()
+    {
+        float totalNet = 0;
+        for (var weeks : weeklyShifts.values())
+        {
+            float weeklyGross = 0;
+            for (var shift : weeks)
+            {
+                weeklyGross += shift.gross;
+            }
+
+            totalNet += TAXCALCULATOR.ReturnNet(weeklyGross);
+        }
+
+        return totalNet;
+    }
+
+    public float getTotalTax()
+    {
+        float totalNet = 0;
+        for (var weeks : weeklyShifts.values())
+        {
+            float weeklyGross = 0;
+            for (var shift : weeks)
+            {
+                weeklyGross += shift.gross;
+            }
+
+            var tax = TAXCALCULATOR.ReturnTax(weeklyGross);
+            totalNet += tax;
+        }
+
+        return totalNet;
+    }
+
+    // TODO Generate JSON File Containing Compiled Data
 }

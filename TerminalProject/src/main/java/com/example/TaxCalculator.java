@@ -19,24 +19,31 @@ public class TaxCalculator
         return value - x;
     }
 
-    public float ReturnTax(float value)
-    {
-        // Adjust
-        int index;
-        value += 0.99;
 
-        float result = value;
+    /**
+     * @param weeklyEarnings
+     * y = ax - b
+     * y = Weekly tax
+     * x = Weekly earnings (Whole Dollars - Floored) + 99 Cents
+     * a & b = coefficients
+     * @return Tax
+     */
+    public float ReturnTax(float weeklyEarnings)
+    {
+        weeklyEarnings = (float)Math.floor(weeklyEarnings);
+        weeklyEarnings += 0.99;
+
+        float result = weeklyEarnings;
 
         // If Beyond Max Value
-        if (value >= TaxTable[TaxTable.length - 1][0]) return CalculateMethod(value, TaxTable.length - 1);        
+        if (weeklyEarnings >= TaxTable[TaxTable.length - 1][0]) return CalculateMethod(weeklyEarnings, TaxTable.length - 1);
 
         // Identify Correct Tax Section
         for (int i = 0; i < TaxTable.length; i++)
         {
-            if (value <= TaxTable[i][0])
+            if (weeklyEarnings <= TaxTable[i][0])
             {
-                index = i;
-                return CalculateMethod(value, index);
+                return CalculateMethod(weeklyEarnings, i);
             }
         }
 
