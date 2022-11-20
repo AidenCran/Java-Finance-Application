@@ -32,20 +32,12 @@ This application is designed to decompile a shift dataset into various comprehen
 
 ## Testing Processes
 During this project, I'll attempt to apply various testing processes and procedures where applicable.
-<br>
-_(Mainly during calculation methods)_
 
-### Manual Testing
-...
-
-### Automatic Testing
-...
-
-#### Specific Unit Tests
-...
-
-#### Monkey Tests
-...
+### [Unit Testing](./Documentation/UnitTesting.md)
+### [Integration Testing](./Documentation/IntegrationTesting.md)
+### [System Testing](./Documentation/SystemTesting.md)
+### [Acceptance Testing](./Documentation/AcceptanceTesting.md)
 
 ## Future Implementations
-- TBC
+- Add Graphs
+- Add Comprehensive & Meaningful Statistics

@@ -12,6 +12,11 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="7cb3a0a8-00bb-4ed4-9634-b3be41cb8504" />
+      <option name="name" value="7cb3a0a8-00bb-4ed4-9634-b3be41cb8504" />
+      <option name="url" value="http://www.jfree.org/jfreechart/jfreechart-demo-1.5.2-jar-with-dependencies.jar" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />

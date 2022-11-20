@@ -9,6 +9,12 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import org.jfree.chart.*;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import static com.example.App.TAXCALCULATOR;
 
 public class AppGUI
@@ -16,12 +22,16 @@ public class AppGUI
     public LoadFinanceData loadFinanceData = new LoadFinanceData();
     TaxCalculator taxCalc;
 
+    int baseFrameWidth = 600;
+    int baseFrameHeight = 400;
+
     public AppGUI()
     {
         // Cache Calculator
         taxCalc = TAXCALCULATOR;
 
         DisplayGUI();
+        DisplayGraph(CompileNetTaxDataset());
     }
 
     void DisplayGUI()
@@ -29,9 +39,7 @@ public class AppGUI
         JFrame frame = new JFrame("Tax Calculator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        int frameWidth = 600;
-        int frameHeight = 400;
-        frame.setSize(frameWidth, frameHeight);
+        frame.setSize(baseFrameWidth, baseFrameHeight);
 
         // Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
@@ -135,8 +143,8 @@ public class AppGUI
 
         // Center The Frame
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int xLocation = screenSize.width/2 - frameWidth/2;
-        int yLocation = screenSize.height/2 - frameHeight/2;
+        int xLocation = screenSize.width/2 - baseFrameWidth /2;
+        int yLocation = screenSize.height/2 - baseFrameHeight /2;
         frame.setLocation(xLocation, yLocation);
         
         //#region Key Binds
@@ -166,4 +174,51 @@ public class AppGUI
 
         //#endregion
     }
+
+    /**
+     * Display Basic Graph
+     */
+    void DisplayGraph(DefaultCategoryDataset dataset)
+    {
+        JFreeChart jFreeChart = ChartFactory.createStackedBarChart("Title", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
+
+        // Set Bar Colours
+        CategoryPlot plot = jFreeChart.getCategoryPlot();
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
+        // Index 0: Net Colour
+        renderer.setSeriesPaint(0, Color.blue);
+
+        // Index 1: Tax Colour
+        renderer.setSeriesPaint(1, Color.red);
+
+        ChartPanel chartPanel = new ChartPanel(jFreeChart);
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPanel.setBackground(Color.white);
+
+        JFrame frame = new JFrame("Weekly Income");
+
+        frame.setSize(baseFrameWidth, baseFrameHeight);
+
+        frame.add(chartPanel);
+        frame.setVisible(true);
+    }
+
+
+    /**
+     * To Be Refactored
+     */
+    DefaultCategoryDataset CompileNetTaxDataset()
+    {
+        var dataset = new DefaultCategoryDataset();
+
+        for (var week : loadFinanceData.weeklyShifts){
+            var weekID = String.format("%s", week.getWeekID());
+            dataset.setValue(week.getWeeklyNet(), "Net", weekID);
+            dataset.setValue(week.getWeeklyTax(), "Tax", weekID);
+        }
+
+        return dataset;
+    }
+
 }
