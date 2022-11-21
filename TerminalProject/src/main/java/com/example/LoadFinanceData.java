@@ -1,14 +1,19 @@
 package com.example;
 
-import java.io.*;
-import java.util.*;
-import java.time.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class LoadFinanceData {
     ArrayList<ShiftData> allShifts = new ArrayList<>();
-    List<WeeklyShift> weeklyShifts = new ArrayList<>();
+    List<WeeklyShift> weeklyShifts;
     int dateColIndex = 1;
     int startTimeColIndex = 2;
     int endTimeColIndex = 3;
@@ -23,19 +28,13 @@ public class LoadFinanceData {
         OpenFinanceDataTSVFile(new File(fileName));
     }
 
-    public LoadFinanceData()
-    {
+    public LoadFinanceData() {
         OpenFinanceDataTSVFile(new File("src/ShiftData.tsv"));
-
-        System.out.println(getGrossPay());
-        System.out.println(getTotalTax());
-        System.out.println(getNetPay());
     }
 
     /**
-     * @param file
-     * Extracts Finance Data From Parsed TSV File
-     * Columns Dynamically Adjusted By User Through GUI
+     * @param file Extracts Finance Data From Parsed TSV File
+     *             Columns Dynamically Adjusted By User Through GUI
      */
     public void OpenFinanceDataTSVFile(File file) {
         int rows = 200;
@@ -66,14 +65,13 @@ public class LoadFinanceData {
                 LocalDate newDate = LocalDate.parse(array[i][dateColIndex], dateFormatter);
                 LocalTime startTime = LocalTime.parse(array[i][startTimeColIndex].toUpperCase(), timeFormatter);
                 LocalTime endTime = LocalTime.parse(array[i][endTimeColIndex].toUpperCase(), timeFormatter);
-                float rate = Float.parseFloat(array[i][rateColIndex].replace("$",""));
+                float rate = Float.parseFloat(array[i][rateColIndex].replace("$", ""));
                 boolean isHoliday = Boolean.parseBoolean(array[i][holidayColIndex]);
 
                 // Create New Data Object
                 ShiftData newData = new ShiftData(newDate, startTime, endTime, rate, isHoliday);
                 allShifts.add(newData);
             }
-
 
 
         } catch (Exception e) {
@@ -83,7 +81,7 @@ public class LoadFinanceData {
         GroupDataIntoWeeks();
     }
 
-    void GroupDataIntoWeeks(){
+    void GroupDataIntoWeeks() {
         // Cache Local List
         List<WeeklyShift> weeklyShiftList = new ArrayList<>();
 
@@ -92,13 +90,12 @@ public class LoadFinanceData {
         ShiftData lastShift = allShifts.get(0);
 
         // Iterate Through All Shifts
-        for (var shift : allShifts){
+        for (var shift : allShifts) {
 
             // If Shift Has The Same ID
             if (shift.getShiftID() == lastShift.getShiftID()) {
                 shifts.add(shift);
-            }
-            else{
+            } else {
                 weeklyShiftList.add(new WeeklyShift(shifts));
                 shifts = new ArrayList<>();
                 shifts.add(shift);
@@ -112,8 +109,7 @@ public class LoadFinanceData {
         weeklyShifts = weeklyShiftList;
     }
 
-    public float getGrossPay()
-    {
+    public float getGrossPay() {
         float totalGross = 0;
         for (var week : weeklyShifts) {
             totalGross += week.getWeeklyGross();
@@ -122,8 +118,7 @@ public class LoadFinanceData {
         return totalGross;
     }
 
-    public float getNetPay()
-    {
+    public float getNetPay() {
         float totalNet = 0;
         for (var week : weeklyShifts) {
             totalNet += week.getWeeklyNet();
@@ -132,8 +127,7 @@ public class LoadFinanceData {
         return totalNet;
     }
 
-    public float getTotalTax()
-    {
+    public float getTotalTax() {
         float totalTax = 0;
         for (var week : weeklyShifts) {
             totalTax += week.getWeeklyTax();

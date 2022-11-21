@@ -1,45 +1,113 @@
 package com.example;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
-import java.io.File;
+import com.example.Commands.*;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
-
-import org.jfree.chart.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+
+import java.util.Arrays;
+import java.util.HashMap;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import static com.example.App.TAXCALCULATOR;
 
-public class AppGUI
-{
+public class AppGUI {
     public LoadFinanceData loadFinanceData = new LoadFinanceData();
-    TaxCalculator taxCalc;
+    TaxCalculator TaxCalculator;
+
+    HashMap<String, ICommand> CommandMap = new HashMap<>();
+
+    JFrame MainGUI;
+    JFrame GraphGUI;
 
     int baseFrameWidth = 600;
     int baseFrameHeight = 400;
 
-    public AppGUI()
-    {
+    public AppGUI() {
         // Cache Calculator
-        taxCalc = TAXCALCULATOR;
+        TaxCalculator = TAXCALCULATOR;
 
-        DisplayGUI();
-        DisplayGraph(CompileNetTaxDataset());
+        DisplayManualCalculatorGUI();
+        DisplayStackedBarChart(CompileNetTaxDataset());
+
+        SetupCommands();
+
+
+        OpenCodeGUI();
+
+        JFrame frame = new JFrame("T");
+//        frame.setVisible(true);
+        JPanel basePanel = new JPanel();
+        frame.add(basePanel);
+        frame.setVisible(true);
+        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        InputMap inputMap = basePanel.getInputMap(condition);
+        ActionMap actionMap = basePanel.getActionMap();
+
+        // Refactor
+        String click = "click";
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), click);
+        actionMap.put(click, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                OpenCodeGUI();
+            }
+        });
     }
 
-    void DisplayGUI()
-    {
-        JFrame frame = new JFrame("Tax Calculator");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    void SetupCommands(){
+        var x = new ToggleGUI(MainGUI, "Main");
+        var y = new ToggleGUI(GraphGUI, "Graph");
 
-        frame.setSize(baseFrameWidth, baseFrameHeight);
+        CommandMap.put(x.Key(), x);
+//        CommandMap.put(y.Key(), y);
+    }
+
+    private void OpenCodeGUI(){
+
+        JFrame frame = new JFrame("Title");
+        String[] output = JOptionPane.showInputDialog(frame, "Prompt").split(" ");
+        String key = output[0];
+
+        if (CommandMap.containsKey(key)){
+            ICommand obj = CommandMap.get(key);
+
+            String[] args = output;
+
+            // TODO: Refactor To Remove With 'N' Length (Where N is amount of Keys)
+
+            // Remove Key
+            args = ArrayUtils.remove(args, 0);
+
+            // Remove Sub Key
+            args = ArrayUtils.remove(args, 0);
+
+            System.out.println(Arrays.toString(output) + "\n" + Arrays.toString(args));
+            obj.Invoke(args);
+        }
+    }
+
+    // TODO: Rework Below GUI to not CORE / MAIN but a side GUI. A GUI Accessible Through The Console Above
+    // TODO: Adjust Console Above | Usable, Refactor
+    private void DisplayManualCalculatorGUI() {
+        MainGUI = new JFrame("Tax Calculator");
+        MainGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        MainGUI.setSize(baseFrameWidth, baseFrameHeight);
 
         // Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
@@ -49,17 +117,20 @@ public class AppGUI
         mb.add(m2);
         JMenuItem openMenuItem = new JMenuItem("Open");
 
-        openMenuItem.addActionListener((x)->{
+        openMenuItem.addActionListener((x) -> {
             JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             jfc.setDialogTitle("Select a TSV File");
             jfc.setAcceptAllFileFilterUsed(false);
             FileNameExtensionFilter filter = new FileNameExtensionFilter("TSV Files", "tsv");
             jfc.addChoosableFileFilter(filter);
-    
+
             int returnValue = jfc.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File output = jfc.getSelectedFile();
                 System.out.println(output.getPath());
+
+                // TODO: Add Additional Menu To Set Column Indexes Correlating To Data Columns
+
                 loadFinanceData.OpenFinanceDataTSVFile(output);
             }
         });
@@ -71,53 +142,50 @@ public class AppGUI
         // Text Area at the Center
         JTextArea ta = new JTextArea();
         ta.setEditable(false);
-        
-        //Creating the panel at bottom and adding components
-        JPanel panel = new JPanel(); // the panel is not visible in output
+
+        // General Panel
+        JPanel panel = new JPanel();
         JLabel label = new JLabel("Enter Text");
-        JTextField tf = new JTextField(4); // Accepts Upto 4 Characters (9999)
-        
+        JTextField tf = new JTextField(4);
+
         //#region Buttons
 
         JButton send = new JButton("Send");
 
-        send.addActionListener((x)->
+        send.addActionListener((x) ->
         {
             if (tf.getText() == null) return;
-            
+
             float gross;
 
-            try
-            {
+            try {
                 gross = Float.parseFloat(tf.getText());
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println("Exception: " + e);
                 tf.selectAll();
                 tf.setBackground(Color.red);
                 Toolkit.getDefaultToolkit().beep();
                 return;
             }
-            
+
             tf.setBackground(Color.white);
-            
+
             // Calculate Data
-            var tax = taxCalc.ReturnTax(gross);
+            var tax = TaxCalculator.ReturnTax(gross);
             var net = gross - tax;
 
             // Append Values
             String nl = "Gross: " + gross + "\tTax: " + tax + "\tNet: " + net;
-            ta.append("\n"+nl);
+            ta.append("\n" + nl);
 
             // Reset Text
             tf.setText("");
         });
-        
-        
+
+
         JButton reset = new JButton("Reset");
 
-        reset.addActionListener((x)->
+        reset.addActionListener((x) ->
         {
             ta.setText(null);
             tf.setText(null);
@@ -131,46 +199,44 @@ public class AppGUI
         panel.add(reset);
 
         // Adding Components to the frame.
-        frame.getContentPane().add(BorderLayout.SOUTH, panel);
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.getContentPane().add(BorderLayout.CENTER, ta);
-        frame.add(BorderLayout.CENTER, new JScrollPane(ta));
-        frame.setResizable(true);
-        frame.setVisible(true);
-        
+        MainGUI.getContentPane().add(BorderLayout.SOUTH, panel);
+        MainGUI.getContentPane().add(BorderLayout.NORTH, mb);
+        MainGUI.getContentPane().add(BorderLayout.CENTER, ta);
+        MainGUI.add(BorderLayout.CENTER, new JScrollPane(ta));
+        MainGUI.setResizable(true);
+//        MainGUI.setVisible(true);
+
         // Post Init
         tf.requestFocus();
 
         // Center The Frame
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int xLocation = screenSize.width/2 - baseFrameWidth /2;
-        int yLocation = screenSize.height/2 - baseFrameHeight /2;
-        frame.setLocation(xLocation, yLocation);
-        
+        int xLocation = screenSize.width / 2 - baseFrameWidth / 2;
+        int yLocation = screenSize.height / 2 - baseFrameHeight / 2;
+        MainGUI.setLocation(xLocation, yLocation);
+
         //#region Key Binds
 
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
         InputMap inputMap = panel.getInputMap(condition);
         ActionMap actionMap = panel.getActionMap();
-        
+
         String enter = "enter";
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), enter);
         actionMap.put(enter, new AbstractAction() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) 
-            {
-                if (tf.isFocusOwner()) 
-                {
+            public void actionPerformed(ActionEvent arg0) {
+                if (tf.isFocusOwner()) {
                     send.doClick();
                     return;
                 }
-                
+
                 // Must be a default way of operating this
                 if (send.isFocusOwner()) send.doClick();
                 if (reset.isFocusOwner()) reset.doClick();
             }
-         });
+        });
 
         //#endregion
     }
@@ -178,8 +244,7 @@ public class AppGUI
     /**
      * Display Basic Graph
      */
-    void DisplayGraph(DefaultCategoryDataset dataset)
-    {
+    void DisplayStackedBarChart(DefaultCategoryDataset dataset) {
         JFreeChart jFreeChart = ChartFactory.createStackedBarChart("Title", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
 
         // Set Bar Colours
@@ -196,23 +261,26 @@ public class AppGUI
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         chartPanel.setBackground(Color.white);
 
-        JFrame frame = new JFrame("Weekly Income");
+        GraphGUI = new JFrame("Weekly Income");
 
-        frame.setSize(baseFrameWidth, baseFrameHeight);
+        GraphGUI.setSize(baseFrameWidth, baseFrameHeight);
 
-        frame.add(chartPanel);
-        frame.setVisible(true);
+        GraphGUI.add(chartPanel);
+//        GraphGUI.setVisible(true);
+    }
+
+    void DisplayStatistics() {
+
     }
 
 
     /**
      * To Be Refactored
      */
-    DefaultCategoryDataset CompileNetTaxDataset()
-    {
+    DefaultCategoryDataset CompileNetTaxDataset() {
         var dataset = new DefaultCategoryDataset();
 
-        for (var week : loadFinanceData.weeklyShifts){
+        for (var week : loadFinanceData.weeklyShifts) {
             var weekID = String.format("%s", week.getWeekID());
             dataset.setValue(week.getWeeklyNet(), "Net", weekID);
             dataset.setValue(week.getWeeklyTax(), "Tax", weekID);
@@ -220,5 +288,4 @@ public class AppGUI
 
         return dataset;
     }
-
 }

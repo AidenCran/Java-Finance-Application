@@ -19,7 +19,6 @@ public class TaxCalculator
         return value - x;
     }
 
-
     /**
      * @param weeklyEarnings
      * y = ax - b
