@@ -1,6 +1,7 @@
-package com.example;
+package com.FinanceApp.Data;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 
@@ -24,8 +25,7 @@ public class ShiftData implements Comparable<ShiftData> {
         return shiftID;
     }
 
-    public ShiftData(LocalDate date, LocalTime startTime, LocalTime endTime, float rate, boolean isHoliday)
-    {
+    public ShiftData(LocalDate date, LocalTime startTime, LocalTime endTime, float rate, boolean isHoliday) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -34,14 +34,13 @@ public class ShiftData implements Comparable<ShiftData> {
 
         weekday = date.getDayOfWeek().toString();
         hoursWorked = endTime.toSecondOfDay() - startTime.toSecondOfDay();
-        hoursWorked =  hoursWorked / 60 / 60;
+        hoursWorked = hoursWorked / 60 / 60;
         gross = hoursWorked * rate;
 
         CreateShiftID();
     }
 
-    void CreateShiftID()
-    {
+    void CreateShiftID() {
         // Define WOY Field
         TemporalField woy = WeekFields.ISO.weekOfWeekBasedYear();
 

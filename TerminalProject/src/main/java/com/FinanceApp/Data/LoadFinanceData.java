@@ -1,4 +1,4 @@
-package com.example;
+package com.FinanceApp.Data;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -107,33 +107,6 @@ public class LoadFinanceData {
         // Add Last Week
         weeklyShiftList.add(new WeeklyShift(shifts));
         weeklyShifts = weeklyShiftList;
-    }
-
-    public float getGrossPay() {
-        float totalGross = 0;
-        for (var week : weeklyShifts) {
-            totalGross += week.getWeeklyGross();
-        }
-
-        return totalGross;
-    }
-
-    public float getNetPay() {
-        float totalNet = 0;
-        for (var week : weeklyShifts) {
-            totalNet += week.getWeeklyNet();
-        }
-
-        return totalNet;
-    }
-
-    public float getTotalTax() {
-        float totalTax = 0;
-        for (var week : weeklyShifts) {
-            totalTax += week.getWeeklyTax();
-        }
-
-        return totalTax;
     }
 
     // TODO Generate JSON File Containing Compiled Data

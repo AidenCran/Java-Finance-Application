@@ -1,7 +1,8 @@
-package com.example;
+package com.FinanceApp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.FinanceApp.Data.TaxCalculator;
 import org.junit.Test;
 
 /**

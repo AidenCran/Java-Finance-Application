@@ -1,13 +1,13 @@
-package com.example;
+package com.FinanceApp.Data;
 
 import java.util.List;
 
-import static com.example.App.TAXCALCULATOR;
+import static com.FinanceApp.App.TAXCALCULATOR;
 
 public class WeeklyShift {
     private final List<ShiftData> _shifts;
     private final float _weekID;
-    public TaxCalculator TaxCalculator;
+    public com.FinanceApp.Data.TaxCalculator TaxCalculator;
     private float _weeklyGross;
     private float _weeklyTax;
     private float _weeklyNet;

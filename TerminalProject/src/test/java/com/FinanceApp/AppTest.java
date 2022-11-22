@@ -1,4 +1,4 @@
-package com.example;
+package com.FinanceApp;
 
 import static org.junit.Assert.assertTrue;
 
