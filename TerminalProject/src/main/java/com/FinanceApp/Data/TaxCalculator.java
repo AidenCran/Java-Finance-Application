@@ -30,9 +30,14 @@ public class TaxCalculator {
 
         float result = weeklyEarnings;
 
+        // Guard
+        if (weeklyEarnings <= 0) return 0;
+
         // If Beyond Max Value
-        if (weeklyEarnings >= TaxTable[TaxTable.length - 1][0])
-            return CalculateMethod(weeklyEarnings, TaxTable.length - 1);
+        // Calculator Unreliable Post Max Value ($3461)
+        if (weeklyEarnings >= TaxTable[TaxTable.length - 1][0]) return 0;
+//            return CalculateMethod(weeklyEarnings, TaxTable.length - 1);
+
 
         // Identify Correct Tax Section
         for (int i = 0; i < TaxTable.length; i++) {

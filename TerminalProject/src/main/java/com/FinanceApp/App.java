@@ -1,15 +1,17 @@
 package com.FinanceApp;
 
+import com.FinanceApp.Data.DataHandler;
 import com.FinanceApp.Data.TaxCalculator;
-import com.FinanceApp.GUI.AppGUI;
+import com.FinanceApp.GUI.GUIManager;
 
 public class App {
-    public static TaxCalculator TAXCALCULATOR = new TaxCalculator();
+    public static TaxCalculator TAXCALCULATOR;
+    public static DataHandler DATAHANDLER;
+    public static GUIManager GUIMANAGER;
 
     public static void main(String[] args) {
         TAXCALCULATOR = new TaxCalculator();
-        AppGUI app = new AppGUI();
-
-        System.out.println("GOT HERE");
+        DATAHANDLER = new DataHandler();
+        GUIMANAGER = new GUIManager();
     }
 }

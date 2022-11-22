@@ -130,7 +130,6 @@ public class TaxCalculatorGUI extends GenericGUI {
 
         // Center The Frame
         GUIScreenPosition.SetScreenLocation(ScreenPosition.Center, frame);
-        frame.setVisible(true);
 
         //#region Key Binds
 

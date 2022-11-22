@@ -21,10 +21,6 @@ public class ShiftData implements Comparable<ShiftData> {
     int year;
     int shiftID;
 
-    public int getShiftID() {
-        return shiftID;
-    }
-
     public ShiftData(LocalDate date, LocalTime startTime, LocalTime endTime, float rate, boolean isHoliday) {
         this.date = date;
         this.startTime = startTime;
@@ -38,6 +34,10 @@ public class ShiftData implements Comparable<ShiftData> {
         gross = hoursWorked * rate;
 
         CreateShiftID();
+    }
+
+    public int getShiftID() {
+        return shiftID;
     }
 
     void CreateShiftID() {

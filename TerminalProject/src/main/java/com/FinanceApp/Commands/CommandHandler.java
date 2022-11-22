@@ -1,6 +1,9 @@
 package com.FinanceApp.Commands;
 
-import com.FinanceApp.GUI.AppGUI;
+import com.FinanceApp.GUI.GUIManager;
+import com.FinanceApp.GUI.GraphGUI;
+import com.FinanceApp.GUI.StatisticGUI;
+import com.FinanceApp.GUI.TaxCalculatorGUI;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -9,22 +12,32 @@ import java.util.ArrayList;
 public class CommandHandler {
 
     private final ArrayList<ICommand> _commands = new ArrayList<>();
+    private final GUIManager _appGUI;
 
-    private final AppGUI _appGUI;
-
-    public CommandHandler(AppGUI appGUI) {
+    public CommandHandler(GUIManager appGUI) {
         this._appGUI = appGUI;
 
         SetupCommands();
     }
 
     /**
+     * Test Case
+     */
+    public CommandHandler() {
+        _appGUI = null;
+    }
+
+    public ArrayList<ICommand> GetCommands() {
+        return _commands;
+    }
+
+    /**
      * Defines all commands
      */
     void SetupCommands() {
-        _commands.add(new ToggleGUI(_appGUI::CreateManualCalculatorGUI, "CALC"));
-        _commands.add(new ToggleGUI(_appGUI::CreateDefaultGraphChart, "GRAPH"));
-        _commands.add(new ToggleGUI(_appGUI::CreateStatisticsGUI, "STATS"));
+        _commands.add(new ToggleGUI<>(new TaxCalculatorGUI(), "CALC"));
+        _commands.add(new ToggleGUI<>(new GraphGUI(), "GRAPH"));
+        _commands.add(new ToggleGUI<>(new StatisticGUI(), "STATS"));
     }
 
     /**
@@ -44,14 +57,19 @@ public class CommandHandler {
     /**
      * @param input User Prompt Input
      */
-    void CallCommand(String[] input) {
+    public boolean CallCommand(String[] input) {
+        // Guard
+        if (input == null || input.length < 2) return false;
+
         // Define Keys
         String key = input[0].toUpperCase();
         String subKey = input[1].toUpperCase();
 
+        if (_commands.size() == 0) return false;
+
         // Query & Guard
         var command = _commands.stream().filter(x -> x.Key().equals(key) && x.SubKey().equals(subKey)).findFirst().orElse(null);
-        if (command == null) return;
+        if (command == null) return false;
 
         // Reformat String
         String[] args = input;
@@ -62,5 +80,6 @@ public class CommandHandler {
 
 //        System.out.println(Arrays.toString(output) + "\n" + Arrays.toString(args));
         command.Invoke(args);
+        return true;
     }
 }

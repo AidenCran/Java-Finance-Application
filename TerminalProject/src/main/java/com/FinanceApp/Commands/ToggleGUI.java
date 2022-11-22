@@ -1,28 +1,23 @@
 package com.FinanceApp.Commands;
 
-import javax.swing.*;
+import com.FinanceApp.GUI.GenericGUI;
+
 import java.util.ArrayList;
 
-public class ToggleGUI implements ICommand {
+public class ToggleGUI<T extends GenericGUI> implements ICommand {
 
+    T GUI;
     String subKey;
 
-    final Runnable action;
 
-    public ToggleGUI(Runnable action, String subKey) {
-//        GUI = frame;
-        this.action = action;
+    public ToggleGUI(T GUI, String subKey) {
+        this.GUI = GUI;
         this.subKey = subKey;
     }
 
     @Override
-    public Runnable action() {
-        return action;
-    }
-
-    @Override
     public String Description() {
-        return "Open / Close Selected Windows";
+        return "Toggle Select Windows";
     }
 
     @Override
@@ -45,8 +40,15 @@ public class ToggleGUI implements ICommand {
     @Override
     public void Invoke(String[] args) {
         // Convert Args
-        boolean val = ParseBool(args[0]);
-        if (val) action.run();
-//        GUI.setVisible(val);
+        String b;
+        if (args.length == 0) b = "True";
+        else b = args[0];
+        boolean val = ParseBool(b);
+
+        if (val) {
+            GUI.GetFrame().setVisible(true);
+        } else {
+            GUI.GetFrame().dispose();
+        }
     }
 }

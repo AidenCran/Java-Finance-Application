@@ -3,8 +3,6 @@ package com.FinanceApp.Commands;
 import java.util.ArrayList;
 
 public interface ICommand {
-    // TODO: Rework Action: Likely Create Base Command class
-    Runnable action();
 
     String Description();
 
