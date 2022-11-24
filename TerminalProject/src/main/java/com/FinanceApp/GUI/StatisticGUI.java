@@ -6,6 +6,7 @@ import static com.FinanceApp.App.DATAHANDLER;
 
 public class StatisticGUI extends GenericGUI {
     public StatisticGUI() {
+        super();
         DataHandler dataHandler = DATAHANDLER;
 
         // TODO: Gross Total | Tax Total | Net Total
@@ -15,8 +16,8 @@ public class StatisticGUI extends GenericGUI {
                 "Total Taxes\t\t$" + dataHandler.getTotalTax() + "\n" +
                 "Total Net\t\t$" + dataHandler.getNetPay() + "\n";
 
-        // TODO: Fix Quick Hack
-        var x = new GenericGUI("Statistic GUI", "Statistics", contentBuilder);
-        frame = x.frame;
+        setTitle("Statistic GUI");
+        titleLabel.setText("Statistics");
+        CreateTextPanel(contentBuilder);
     }
 }

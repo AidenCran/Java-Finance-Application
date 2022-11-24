@@ -10,43 +10,47 @@ import java.awt.event.KeyEvent;
 
 import static com.FinanceApp.GUI.GUIManager.COMMANDHANDLER;
 
-public class GenericGUI {
-
-    protected JFrame frame;
+public class GenericGUI extends JFrame {
     protected JPanel panel;
-    protected JLabel title;
+    protected JLabel titleLabel;
     protected JTextPane textPane;
-    protected JButton button;
+    protected JButton closeButton;
     protected int baseFrameWidth = 600;
     protected int baseFrameHeight = 400;
 
     public GenericGUI() {
+        CreateCoreGUI();
     }
 
     public GenericGUI(String FrameTitle, String LabelTitle, String PanelContent) {
-        frame = new JFrame(FrameTitle);
-        frame.setSize(500, 300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        CreateCoreGUI();
 
-        textPane = new JTextPane();
-        textPane.setEditable(false);
-        textPane.setText(PanelContent);
+        setName(FrameTitle);
+        setSize(500, 300);
 
-        button = new JButton();
-        button.setText("Close");
-        button.addActionListener(e -> frame.dispose());
+        CreateTextPanel(PanelContent);
+
+        titleLabel.setText(LabelTitle);
+    }
+
+    private void CreateCoreGUI(){
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(500, 500);
+
+        closeButton = new JButton();
+        closeButton.setText("Close");
+        closeButton.addActionListener(e -> dispose());
 
         panel = new JPanel();
-        panel.add(textPane);
 
-        title = new JLabel(LabelTitle, JLabel.CENTER);
-        title.setFont(new Font("Serif", Font.PLAIN, 40));
+        titleLabel = new JLabel("<TITLE>", JLabel.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.PLAIN, 40));
 
-        frame.getContentPane().add(BorderLayout.NORTH, title);
-        frame.getContentPane().add(BorderLayout.CENTER, panel);
-        frame.getContentPane().add(BorderLayout.SOUTH, button);
+        getContentPane().add(BorderLayout.NORTH, titleLabel);
+        getContentPane().add(BorderLayout.CENTER, panel);
+        getContentPane().add(BorderLayout.SOUTH, closeButton);
 
-        GUIScreenPosition.SetScreenLocation(ScreenPosition.Center, frame);
+        GUIScreenPosition.SetScreenLocation(ScreenPosition.Center, this);
 
         //#region Key Binds
 
@@ -67,7 +71,11 @@ public class GenericGUI {
         //#endregion
     }
 
-    public JFrame GetFrame() {
-        return frame;
+    protected void CreateTextPanel(String content){
+        textPane = new JTextPane();
+        textPane.setEditable(false);
+        textPane.setText(content);
+
+        panel.add(textPane);
     }
 }

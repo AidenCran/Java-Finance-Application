@@ -38,6 +38,11 @@ public class CommandHandler {
         _commands.add(new ToggleGUI<>(new TaxCalculatorGUI(), "CALC"));
         _commands.add(new ToggleGUI<>(new GraphGUI(), "GRAPH"));
         _commands.add(new ToggleGUI<>(new StatisticGUI(), "STATS"));
+
+        _commands.add(new DisplayResults(ResultType.TotalGross));
+        _commands.add(new DisplayResults(ResultType.TotalTax));
+        _commands.add(new DisplayResults(ResultType.TotalNet));
+        _commands.add(new DisplayResults(ResultType.TopEarningWeeks));
     }
 
     /**

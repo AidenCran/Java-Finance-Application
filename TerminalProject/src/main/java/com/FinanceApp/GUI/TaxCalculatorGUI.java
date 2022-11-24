@@ -22,9 +22,9 @@ public class TaxCalculatorGUI extends GenericGUI {
         // Cache Calculator
         TaxCalculator = TAXCALCULATOR;
 
-        frame = new JFrame("Tax Calculator");
+        setName("Tax Calculator");
 
-        frame.setSize(baseFrameWidth, baseFrameHeight);
+        setSize(baseFrameWidth, baseFrameHeight);
 
         // Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
@@ -119,17 +119,17 @@ public class TaxCalculatorGUI extends GenericGUI {
         panel.add(reset);
 
         // Adding Components to the frame.
-        frame.getContentPane().add(BorderLayout.SOUTH, panel);
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
-        frame.getContentPane().add(BorderLayout.CENTER, ta);
-        frame.add(BorderLayout.CENTER, new JScrollPane(ta));
-        frame.setResizable(true);
+        getContentPane().add(BorderLayout.SOUTH, panel);
+        getContentPane().add(BorderLayout.NORTH, mb);
+        getContentPane().add(BorderLayout.CENTER, ta);
+        add(BorderLayout.CENTER, new JScrollPane(ta));
+        setResizable(true);
 
         // Post Init
         tf.requestFocus();
 
         // Center The Frame
-        GUIScreenPosition.SetScreenLocation(ScreenPosition.Center, frame);
+        GUIScreenPosition.SetScreenLocation(ScreenPosition.Center, this);
 
         //#region Key Binds
 

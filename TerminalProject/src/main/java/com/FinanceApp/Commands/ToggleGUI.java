@@ -10,6 +10,10 @@ public class ToggleGUI<T extends GenericGUI> implements ICommand {
     String subKey;
 
 
+    /**
+     * @param GUI GUI To Toggle
+     * @param subKey GUI Key
+     */
     public ToggleGUI(T GUI, String subKey) {
         this.GUI = GUI;
         this.subKey = subKey;
@@ -46,9 +50,9 @@ public class ToggleGUI<T extends GenericGUI> implements ICommand {
         boolean val = ParseBool(b);
 
         if (val) {
-            GUI.GetFrame().setVisible(true);
+            GUI.setVisible(true);
         } else {
-            GUI.GetFrame().dispose();
+            GUI.dispose();
         }
     }
 }

@@ -1,16 +1,19 @@
 package com.FinanceApp.Data;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.FinanceApp.App.TAXCALCULATOR;
 
 public class WeeklyShift {
     private final List<ShiftData> _shifts;
-    private final float _weekID;
+    private final int _weekID;
     public com.FinanceApp.Data.TaxCalculator TaxCalculator;
     private float _weeklyGross;
     private float _weeklyTax;
     private float _weeklyNet;
+
+    private DecimalFormat _decimalFormat = new DecimalFormat("0.00");
 
     public WeeklyShift(List<ShiftData> shifts) {
         TaxCalculator = TAXCALCULATOR;
@@ -36,7 +39,7 @@ public class WeeklyShift {
         return _weeklyNet;
     }
 
-    public float getWeekID() {
+    public int getWeekID() {
         return _weekID;
     }
 
@@ -61,5 +64,9 @@ public class WeeklyShift {
 
     void setWeeklyNet() {
         _weeklyNet = TaxCalculator.ReturnNet(_weeklyGross);
+    }
+
+    public String ToString(){
+        return "ID: " + _weekID + "\t\tGross: " + _decimalFormat.format(_weeklyGross) + "\t\tTax: " + _decimalFormat.format(_weeklyTax) + "\t\tNet:" + _decimalFormat.format(_weeklyNet) + "\n";
     }
 }

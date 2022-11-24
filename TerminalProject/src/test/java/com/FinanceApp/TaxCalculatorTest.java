@@ -2,6 +2,7 @@ package com.FinanceApp;
 
 import com.FinanceApp.Data.TaxCalculator;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TaxCalculatorTest {
     @Test
+    @DisplayName("Net Value of 0 should be 0")
     public void netValueOf0_ShouldReturn0(){
         // Arrange
         float grossValue = 0;
@@ -26,6 +28,7 @@ public class TaxCalculatorTest {
     }
 
     @Test
+    @DisplayName("Net Value of Integer Limit, Should be Integer Limit (No Difference)")
     public void netValueOfIntLimit_ShouldReturnIntLimit_NO_DIFFERENCE(){
         // Arrange
         float grossValue = Integer.MAX_VALUE;
@@ -40,6 +43,7 @@ public class TaxCalculatorTest {
     }
 
     @Test
+    @DisplayName("Net Value of Integer Minimum, Should be Integer Minimum (No Difference)")
     public void netValueOfIntMin_ShouldReturnIntMin_NO_DIFFERENCE(){
         // Arrange
         float grossValue = Integer.MIN_VALUE;

@@ -15,11 +15,12 @@ import java.awt.*;
 import static com.FinanceApp.App.DATAHANDLER;
 
 public class GraphGUI extends GenericGUI {
-    DataHandler dataHandler;
+    DataHandler dataHandler = DATAHANDLER;
 
     public GraphGUI() {
+        super();
 
-        dataHandler = DATAHANDLER;
+
 
         var dataset = CompileNetTaxDataset();
         JFreeChart jFreeChart = ChartFactory.createStackedBarChart("Title", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
@@ -38,11 +39,9 @@ public class GraphGUI extends GenericGUI {
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         chartPanel.setBackground(Color.white);
 
-        frame = new JFrame("Weekly Income");
-
-        frame.setSize(baseFrameWidth, baseFrameHeight);
-
-        frame.add(chartPanel);
+        setTitle("Weekly Income");
+        setSize(baseFrameWidth, baseFrameHeight);
+        add(chartPanel);
     }
 
     /**
