@@ -1,4 +1,4 @@
-package com.FinanceApp.GUI;
+package com.FinanceApp.GUI_OLD;
 
 import com.FinanceApp.Data.DataHandler;
 import org.jfree.chart.ChartFactory;
@@ -19,7 +19,6 @@ public class GraphGUI extends GenericGUI {
 
     public GraphGUI() {
         super();
-
 
 
         var dataset = CompileNetTaxDataset();

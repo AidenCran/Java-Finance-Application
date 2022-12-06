@@ -1,6 +1,6 @@
 package com.FinanceApp.Commands;
 
-import com.FinanceApp.GUI.GenericGUI;
+import com.FinanceApp.GUI_OLD.GenericGUI;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class ToggleGUI<T extends GenericGUI> implements ICommand {
 
 
     /**
-     * @param GUI GUI To Toggle
+     * @param GUI    GUI To Toggle
      * @param subKey GUI Key
      */
     public ToggleGUI(T GUI, String subKey) {

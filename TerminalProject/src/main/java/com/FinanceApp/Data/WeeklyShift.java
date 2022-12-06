@@ -8,23 +8,18 @@ import static com.FinanceApp.App.TAXCALCULATOR;
 public class WeeklyShift {
     private final List<ShiftData> _shifts;
     private final int _weekID;
-    public com.FinanceApp.Data.TaxCalculator TaxCalculator;
+    public TaxCalculator TaxCalculator = TAXCALCULATOR;
     private float _weeklyGross;
     private float _weeklyTax;
     private float _weeklyNet;
 
-    private DecimalFormat _decimalFormat = new DecimalFormat("0.00");
+    private final DecimalFormat _decimalFormat = new DecimalFormat("0.00");
 
     public WeeklyShift(List<ShiftData> shifts) {
-        TaxCalculator = TAXCALCULATOR;
         _shifts = shifts;
         _weekID = _shifts.get(0).getShiftID();
 
         initWeeklyData();
-    }
-
-    public List<ShiftData> getShifts() {
-        return _shifts;
     }
 
     public float getWeeklyGross() {
@@ -66,7 +61,7 @@ public class WeeklyShift {
         _weeklyNet = TaxCalculator.ReturnNet(_weeklyGross);
     }
 
-    public String ToString(){
-        return "ID: " + _weekID + "\t\tGross: " + _decimalFormat.format(_weeklyGross) + "\t\tTax: " + _decimalFormat.format(_weeklyTax) + "\t\tNet:" + _decimalFormat.format(_weeklyNet) + "\n";
+    public String ToString() {
+        return "ID: " + _weekID + "\t\tGross: $" + _decimalFormat.format(_weeklyGross) + "\t\tTax: $" + _decimalFormat.format(_weeklyTax) + "\t\tNet: $" + _decimalFormat.format(_weeklyNet) + "\n";
     }
 }

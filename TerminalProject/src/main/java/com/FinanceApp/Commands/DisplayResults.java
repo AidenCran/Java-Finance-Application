@@ -2,7 +2,7 @@ package com.FinanceApp.Commands;
 
 import com.FinanceApp.Data.DataHandler;
 import com.FinanceApp.Data.WeeklyShift;
-import com.FinanceApp.GUI.GenericGUI;
+import com.FinanceApp.GUI_OLD.GenericGUI;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,7 +15,7 @@ public class DisplayResults implements ICommand {
 
     ResultType type;
 
-    public DisplayResults(ResultType type){
+    public DisplayResults(ResultType type) {
         this.type = type;
     }
 
@@ -46,13 +46,16 @@ public class DisplayResults implements ICommand {
     public void Invoke(String[] args) {
         StringBuilder result = new StringBuilder();
 
-        switch(type){
+        switch (type) {
 
-            case TotalGross: result = new StringBuilder(String.valueOf(dataHandler.getGrossPay()));
+            case TotalGross:
+                result = new StringBuilder(String.valueOf(dataHandler.getGrossPay()));
                 break;
-            case TotalTax: result = new StringBuilder(String.valueOf(dataHandler.getTotalTax()));
+            case TotalTax:
+                result = new StringBuilder(String.valueOf(dataHandler.getTotalTax()));
                 break;
-            case TotalNet: result = new StringBuilder(String.valueOf(dataHandler.getNetPay()));
+            case TotalNet:
+                result = new StringBuilder(String.valueOf(dataHandler.getNetPay()));
                 break;
             case TopEarningWeeks:
                 // Get Weeks Count to Display
@@ -68,8 +71,8 @@ public class DisplayResults implements ICommand {
                 // Sort By Net | Reverse List
                 listCopy.sort(
                         Comparator.comparing(
-                        WeeklyShift::getWeeklyNet)
-                        .reversed());
+                                WeeklyShift::getWeeklyNet)
+                                .reversed());
 
                 // Cache New Holder List
                 List<WeeklyShift> topShifts = new ArrayList<>();
@@ -80,7 +83,7 @@ public class DisplayResults implements ICommand {
                     result.append(topShifts.get(i).ToString());
                 }
                 break;
-            }
+        }
 
         System.out.println(result);
 

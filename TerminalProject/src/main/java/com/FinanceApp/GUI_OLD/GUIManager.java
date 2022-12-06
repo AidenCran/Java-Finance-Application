@@ -1,4 +1,4 @@
-package com.FinanceApp.GUI;
+package com.FinanceApp.GUI_OLD;
 
 import com.FinanceApp.Commands.CommandHandler;
 
@@ -12,6 +12,6 @@ public class GUIManager {
         // Generate GUIs
         new MainGUI();
 
-        COMMANDHANDLER.PromptSearchInput();
+//        COMMANDHANDLER.PromptSearchInput();
     }
 }

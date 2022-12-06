@@ -1,9 +1,9 @@
 package com.FinanceApp.Commands;
 
-import com.FinanceApp.GUI.GUIManager;
-import com.FinanceApp.GUI.GraphGUI;
-import com.FinanceApp.GUI.StatisticGUI;
-import com.FinanceApp.GUI.TaxCalculatorGUI;
+import com.FinanceApp.GUI_OLD.GUIManager;
+import com.FinanceApp.GUI_OLD.GraphGUI;
+import com.FinanceApp.GUI_OLD.StatisticGUI;
+import com.FinanceApp.GUI_OLD.TaxCalculatorGUI;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
