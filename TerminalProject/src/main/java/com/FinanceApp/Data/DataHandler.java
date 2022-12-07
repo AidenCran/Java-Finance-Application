@@ -4,15 +4,16 @@ import java.util.List;
 
 public class DataHandler {
     public List<WeeklyShift> weeklyShifts;
-
+    public List<ShiftData> allShifts;
     public LoadFinanceData loadFinanceData;
 
     public DataHandler() {
         loadFinanceData = new LoadFinanceData();
         weeklyShifts = loadFinanceData.weeklyShifts;
+        allShifts = loadFinanceData.allShifts;
     }
 
-    public float getGrossPay() {
+    public float GetGrossPay() {
         float totalGross = 0;
         for (var week : weeklyShifts) {
             totalGross += week.getWeeklyGross();
@@ -21,7 +22,7 @@ public class DataHandler {
         return totalGross;
     }
 
-    public float getNetPay() {
+    public float GetNetPay() {
         float totalNet = 0;
         for (var week : weeklyShifts) {
             totalNet += week.getWeeklyNet();
@@ -30,7 +31,7 @@ public class DataHandler {
         return totalNet;
     }
 
-    public float getTotalTax() {
+    public float GetTotalTax() {
         float totalTax = 0;
         for (var week : weeklyShifts) {
             totalTax += week.getWeeklyTax();

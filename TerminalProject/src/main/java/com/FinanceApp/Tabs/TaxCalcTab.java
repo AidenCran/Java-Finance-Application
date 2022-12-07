@@ -12,12 +12,19 @@ import java.io.File;
 import static com.FinanceApp.App.TAXCALCULATOR;
 
 public class TaxCalcTab extends BaseTab {
-    public TaxCalcTab(){
-        // Cache Calculator
-        var TaxCalculator = TAXCALCULATOR;
 
+    JTextArea OutputArea;
+    JTextField PromptField;
+
+    public TaxCalcTab() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(600, 400));
 
+        add(TopPanel());
+        add(CorePanel());
+    }
+
+    JPanel TopPanel(){
         // Creating the MenuBar and adding components
         JMenuBar mb = new JMenuBar();
         JMenu m1 = new JMenu("FILE");
@@ -39,7 +46,6 @@ public class TaxCalcTab extends BaseTab {
                 System.out.println(output.getPath());
 
                 // TODO: Add Additional Menu To Set Column Indexes Correlating To Data Columns
-
                 // TODO: FIX CONNECTION
 
 //                dataHandler.loadFinanceData.OpenFinanceDataTSVFile(output);
@@ -50,19 +56,16 @@ public class TaxCalcTab extends BaseTab {
         m1.add(openMenuItem);
         m1.add(m22);
 
-        // Text Area at the Center
-        JTextArea ta = new JTextArea();
-        ta.setEditable(false);
-
         // General Panel
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Enter Text");
-        JTextField tf = new JTextField(4);
-        tf.addKeyListener(new KeyAdapter() {
+        JLabel promptLabel = new JLabel("Enter Text");
+        PromptField = new JTextField(4);
+        PromptField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (tf.getText().length() >= 4 ) // limit to 3 characters
+                // Limit Character Input
+                if (PromptField.getText().length() >= 4 ) {
                     e.consume();
+                }
             }
         });
 
@@ -72,32 +75,32 @@ public class TaxCalcTab extends BaseTab {
 
         send.addActionListener((x) ->
         {
-            if (tf.getText() == null) return;
+            if (PromptField.getText() == null) return;
 
             float gross;
 
             try {
-                gross = Float.parseFloat(tf.getText());
+                gross = Float.parseFloat(PromptField.getText());
             } catch (Exception e) {
                 System.out.println("Exception: " + e);
-                tf.selectAll();
-                tf.setBackground(Color.red);
+                PromptField.selectAll();
+                PromptField.setBackground(Color.red);
                 Toolkit.getDefaultToolkit().beep();
                 return;
             }
 
-            tf.setBackground(Color.white);
+            PromptField.setBackground(Color.white);
 
             // Calculate Data
-            var tax = TaxCalculator.ReturnTax(gross);
+            var tax = TAXCALCULATOR.ReturnTax(gross);
             var net = gross - tax;
 
             // Append Values
             String nl = "Gross: " + gross + "\tTax: " + tax + "\tNet: " + net;
-            ta.append("\n" + nl);
+            OutputArea.append("\n" + nl);
 
             // Reset Text
-            tf.setText("");
+            PromptField.setText("");
         });
 
 
@@ -105,25 +108,13 @@ public class TaxCalcTab extends BaseTab {
 
         reset.addActionListener((x) ->
         {
-            ta.setText(null);
-            tf.setText(null);
+            OutputArea.setText(null);
+            PromptField.setText(null);
         });
 
         //#endregion
 
-        panel.add(label); // Components Added using Flow Layout
-        panel.add(tf);
-        panel.add(send);
-        panel.add(reset);
-
-        // Adding Components
-        add(BorderLayout.SOUTH, panel);
-        add(BorderLayout.NORTH, mb);
-        add(BorderLayout.CENTER, ta);
-        // add(BorderLayout.CENTER, new JScrollPane(ta));
-
-        // Post Init
-        tf.requestFocus();
+        var panel = new JPanel();
 
         //#region Key Binds
 
@@ -136,7 +127,7 @@ public class TaxCalcTab extends BaseTab {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (tf.isFocusOwner()) {
+                if (PromptField.isFocusOwner()) {
                     send.doClick();
                     return;
                 }
@@ -148,6 +139,30 @@ public class TaxCalcTab extends BaseTab {
         });
 
         //#endregion
+
+        panel.add(promptLabel);
+        panel.add(PromptField);
+        panel.add(send);
+        panel.add(reset);
+        panel.add(mb);
+        return panel;
+    }
+
+    JPanel CorePanel() {
+        // Text Area at the Center
+        OutputArea = new JTextArea();
+        OutputArea.setEditable(false);
+        OutputArea.setPreferredSize(new Dimension(300, 400));
+
+        var panel = new JPanel();
+        panel.add(OutputArea);
+        panel.setOpaque(false);
+        return panel;
+    }
+
+    @Override
+    public void OnTabSelection() {
+        PromptField.requestFocus();
     }
 
     @Override
@@ -163,5 +178,10 @@ public class TaxCalcTab extends BaseTab {
     @Override
     public String ToolTip() {
         return "Quickly Calculate Withheld Tax (Weekly)";
+    }
+
+    @Override
+    public Color TabColour() {
+        return Color.ORANGE;
     }
 }

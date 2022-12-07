@@ -16,6 +16,18 @@ import static com.FinanceApp.App.DATAHANDLER;
 
 public class GraphTab extends BaseTab {
     public GraphTab(){
+        var button = new JButton("Graph Overview");
+        button.addActionListener((x)->{
+            var frame = new JFrame();
+            frame.add(CreateChartPanel());
+            frame.setVisible(true);
+            frame.pack();
+        });
+
+        add(button);
+    }
+
+    ChartPanel CreateChartPanel() {
         var dataset = CompileNetTaxDataset();
         JFreeChart jFreeChart = ChartFactory.createStackedBarChart("Title", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
 
@@ -33,10 +45,10 @@ public class GraphTab extends BaseTab {
         chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         chartPanel.setBackground(Color.white);
 
-        var newDim = new Dimension(500, 450);
+        var newDim = new Dimension(800, 600);
         chartPanel.setPreferredSize(newDim);
 
-        add(chartPanel);
+        return chartPanel;
     }
 
     /**
@@ -56,6 +68,11 @@ public class GraphTab extends BaseTab {
     }
 
     @Override
+    public void OnTabSelection() {
+
+    }
+
+    @Override
     public String Title() {
         return "Stat Graphs";
     }
@@ -68,5 +85,10 @@ public class GraphTab extends BaseTab {
     @Override
     public String ToolTip() {
         return "Contains Statistic Graphs";
+    }
+
+    @Override
+    public Color TabColour() {
+        return Color.decode("#FABAD2");
     }
 }

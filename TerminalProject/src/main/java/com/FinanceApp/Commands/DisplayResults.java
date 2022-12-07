@@ -49,13 +49,13 @@ public class DisplayResults implements ICommand {
         switch (type) {
 
             case TotalGross:
-                result = new StringBuilder(String.valueOf(dataHandler.getGrossPay()));
+                result = new StringBuilder(String.valueOf(dataHandler.GetGrossPay()));
                 break;
             case TotalTax:
-                result = new StringBuilder(String.valueOf(dataHandler.getTotalTax()));
+                result = new StringBuilder(String.valueOf(dataHandler.GetTotalTax()));
                 break;
             case TotalNet:
-                result = new StringBuilder(String.valueOf(dataHandler.getNetPay()));
+                result = new StringBuilder(String.valueOf(dataHandler.GetNetPay()));
                 break;
             case TopEarningWeeks:
                 // Get Weeks Count to Display

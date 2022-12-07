@@ -12,9 +12,9 @@ public class StatisticGUI extends GenericGUI {
         // TODO: Gross Total | Tax Total | Net Total
         // TODO: Average Per Week | Month | Year
 
-        String contentBuilder = "Total Gross\t\t$" + dataHandler.getGrossPay() + "\n" +
-                "Total Taxes\t\t$" + dataHandler.getTotalTax() + "\n" +
-                "Total Net\t\t$" + dataHandler.getNetPay() + "\n";
+        String contentBuilder = "Total Gross\t\t$" + dataHandler.GetGrossPay() + "\n" +
+                "Total Taxes\t\t$" + dataHandler.GetTotalTax() + "\n" +
+                "Total Net\t\t$" + dataHandler.GetNetPay() + "\n";
 
         setTitle("Statistic GUI");
         titleLabel.setText("Statistics");

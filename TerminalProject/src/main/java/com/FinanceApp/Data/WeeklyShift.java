@@ -19,7 +19,7 @@ public class WeeklyShift {
         _shifts = shifts;
         _weekID = _shifts.get(0).getShiftID();
 
-        initWeeklyData();
+        InitWeeklyData();
     }
 
     public float getWeeklyGross() {
@@ -38,13 +38,13 @@ public class WeeklyShift {
         return _weekID;
     }
 
-    void initWeeklyData() {
-        setWeeklyGross();
-        setWeeklyTax();
-        setWeeklyNet();
+    void InitWeeklyData() {
+        SetWeeklyGross();
+        SetWeeklyTax();
+        SetWeeklyNet();
     }
 
-    void setWeeklyGross() {
+    void SetWeeklyGross() {
         float total = 0;
         for (var shift : _shifts) {
             total += shift.gross;
@@ -53,11 +53,11 @@ public class WeeklyShift {
         _weeklyGross = total;
     }
 
-    void setWeeklyTax() {
+    void SetWeeklyTax() {
         _weeklyTax = TaxCalculator.ReturnTax(_weeklyGross);
     }
 
-    void setWeeklyNet() {
+    void SetWeeklyNet() {
         _weeklyNet = TaxCalculator.ReturnNet(_weeklyGross);
     }
 
